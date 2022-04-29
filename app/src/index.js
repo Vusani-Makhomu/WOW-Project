@@ -92,6 +92,18 @@ class LandingPage extends React.Component {
   }
 }
 
+class PopUp extends React.Component {
+  render() {
+    return (
+      <div class="popUpContainer">
+        <img src="images/run.png" alt="" weight="40" height="50"/>
+        <h1>Upload Complete</h1>
+        <button><img src="images/download.png" alt="" weight="" height=""/>Download PDF</button>
+      </div>
+    )
+  }
+}
+
 
 //==============================================================================
 const root = ReactDOM.createRoot(document.getElementById("root"));
