@@ -1,12 +1,36 @@
 body {
   font-size: 26px;
   color: white;
-  background-color: black;
+  /* background-color: black; */
 }
 
 .landingPageContainer {
 
 }
+
+.popUpContainer {
+	display: grid;
+	place-items: center;
+  background-color: #58514F;
+  border-radius: 50px;
+  width: 80%;
+  position: relative;
+  left: 10%;
+  padding-top: 30px;
+}
+
+#pdfDownloadBtn {
+  cursor: pointer;
+}
+
+#uploadCompleteTxt {
+  font-size: 70px;
+}
+
+#downloadPdfTxt {
+  font-size: 10px;
+}
+
 
 .formContainer {
   display: flex;

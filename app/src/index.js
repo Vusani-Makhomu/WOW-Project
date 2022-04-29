@@ -85,7 +85,8 @@ class LandingPage extends React.Component {
           <h3 id="uploadDataHeader">Upload data</h3>
         </div>
         <div class="pageForm">
-          <Form />
+          {/* <Form /> */}
+          <PopUp />
         </div>
       </div>
     )
@@ -96,9 +97,10 @@ class PopUp extends React.Component {
   render() {
     return (
       <div class="popUpContainer">
-        <img src="images/run.png" alt="" weight="40" height="50"/>
-        <h1>Upload Complete</h1>
-        <button><img src="images/download.png" alt="" weight="" height=""/>Download PDF</button>
+        <img src="images/running.png" alt="" weight="80" height="100"/>
+        <h1 id="uploadCompleteTxt">Upload Complete</h1>
+        <button id="pdfDownloadBtn"><img src="images/download.png" alt="" weight="200" height="100"/></button>
+        <p id="downloadPdfTxt">Download PDF</p>
       </div>
     )
   }
