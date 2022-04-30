@@ -3,15 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Form extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nameInputValue: "",
+    };
+  }
 
   // On file select
-  onFileChange = event => {
+  onFileChange(event, userName) {
     // Get the selected file.
     const file = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.onload = function (event) {
     const text = event.target.result;
+    
     // console.log("Here is the file text:", text)
+    // console.log("Here is your name:", name.text);
 
       const csvHeader = text.slice(0, text.indexOf("\n")).split(",");
       const csvRows = text.slice(text.indexOf("\n") + 1).split("\n");
@@ -48,12 +56,21 @@ class Form extends React.Component {
       if (sumBMI > 25) {
           overWeightPercentageIncrease = ((sumBMI - 25)/25)*100;
       }
+
       sumBMI = Math.round(sumBMI);
       overWeightPercentageIncrease = Math.round(overWeightPercentageIncrease);
-      console.log("Sum BMI:", sumBMI);
-      console.log("Percentage increase:", overWeightPercentageIncrease);
+      // console.log("Sum BMI:", sumBMI);
+      // console.log("Percentage increase:", overWeightPercentageIncrease);
+      // console.log("Here is the user name:", userName);
   };
   fileReader.readAsText(file);
+};
+
+saveNameInputValue = event => {
+  const enteredValue = event.target.value;
+  this.setState({
+    nameInputValue: enteredValue,
+  });
 };
 
   render() {
@@ -64,9 +81,9 @@ class Form extends React.Component {
           <p>Please complete your details, and upload<br/> your data to the platform.</p>
           <form>
             <label for="name">What is your name?</label>
-            <input type="text" name="name" required/><br/>
+            <input type="text" name="name" id="name" value={this.state.nameInputValue} onChange={event => this.saveNameInputValue(event)} required/><br/>
             <label for="dataUpload">Please upload your data</label><br/>
-            <input type="file" accept=".csv" onChange={this.onFileChange} required/>
+            <input type="file" accept=".csv" onChange={(event) => {this.onFileChange(event, this.state.nameInputValue)}} required/>
           </form>
         </div>
         <div>
@@ -85,8 +102,7 @@ class LandingPage extends React.Component {
           <h3 id="uploadDataHeader">Upload data</h3>
         </div>
         <div class="pageForm">
-          {/* <Form /> */}
-          <PopUp />
+          <Form />
         </div>
       </div>
     )
