@@ -27,6 +27,10 @@ body {
   font-size: 70px;
 }
 
+#uploadDataContainer {
+  margin: 50px 50px 0 100px;
+}
+
 #downloadPdfTxt {
   font-size: 10px;
 }
@@ -37,14 +41,23 @@ body {
   justify-content: center;
   align-items: center;
   border-style: solid;
+  margin: 20px 60px 0 60px;
 }
 
 input[type=text], select {
-  width: 80%;
-  padding: 12px 20px;
+  width: 40%;
+  padding: 10px 20px;
   margin: 8px 10p;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  position: relative;
+  left: 30px;
 }
+
+#landingPageForm {
+  padding-right: 20px;
+  
+}
+

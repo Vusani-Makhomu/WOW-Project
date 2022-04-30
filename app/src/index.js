@@ -75,19 +75,22 @@ saveNameInputValue = event => {
 
   render() {
     return (
-      <div class="formContainer">
-        <div>
+      <div>
+        <div class="formContainer">
+          <div>
           <h1>Welcome</h1>
           <p>Please complete your details, and upload<br/> your data to the platform.</p>
-          <form>
+          <form id="landingPageForm">
             <label for="name">What is your name?</label>
             <input type="text" name="name" id="name" value={this.state.nameInputValue} onChange={event => this.saveNameInputValue(event)} required/><br/>
             <label for="dataUpload">Please upload your data</label><br/>
             <input type="file" accept=".csv" onChange={(event) => {this.onFileChange(event, this.state.nameInputValue)}} required/>
           </form>
+          </div>
+          <img src="images/workout.jpg" alt="2 people working out" weight="300" height="400"/>
         </div>
         <div>
-        <img src="images/workout.jpg" alt="" weight="400" height="500"/>
+        
       </div>
     </div>
     )
@@ -98,8 +101,8 @@ class LandingPage extends React.Component {
   render() {
     return (
       <div class="landingPageContainer">
-        <div id="headerContainer">
-          <h3 id="uploadDataHeader">Upload data</h3>
+        <div id="uploadDataContainer">
+          <p id="uploadDataTxt">Upload data</p>
         </div>
         <div class="pageForm">
           <Form />
