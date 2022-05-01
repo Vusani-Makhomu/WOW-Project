@@ -15,7 +15,7 @@ class Form extends React.Component {
       downloadPdf: false,
       userNameValue: "",
       averageBMIValue: 0,
-      percentageIncreaseValue: 0,
+      numOverWeightValue: 0,
       numParticipantsValue: 0,
     };
     this.savePDFDetails = this.savePDFDetails.bind(this);
@@ -66,32 +66,29 @@ class Form extends React.Component {
         Calculate the sum bmi of the given data.
       */
      var sumBMI = 0;
+     var numOverWeight = 0;
       array.forEach(eachLine => {
           var height = Number(eachLine["Height"]);
           var weight = Number(eachLine["Weight"]);
-          var bmi = (weight/height/height)*10000;
+          
+          var bmi = (weight/(height*height))*10000;
+          bmi = Math.ceil(bmi);
+          /*
+            A BMI of 25.0 or more is overweight
+          */
+          if (bmi > 25) {
+            numOverWeight +=1;
+          }
+        
           sumBMI+=bmi
       });
       sumBMI = Math.round(sumBMI);
+      console.log("Here are the number of participants who are overweight: "+numOverWeight);
 
       /*
         Calculate the average BMI.
       */
       const averageBMI = sumBMI/array.length;
-
-
-      /*
-        A BMI of 25.0 or more is overweight, while the healthy range is 18.5 to 24.9.
-        Percentage increase formula:
-            ((final value - starting value) / starting value) * 100
-      */
-      var overWeightPercentageIncrease = 0;
-      if (averageBMI > 25) {
-          overWeightPercentageIncrease = ((averageBMI - 25)/25)*100;
-      } else {
-        overWeightPercentageIncrease = ((averageBMI - 18.5)/18.5)*100;
-      }
-      overWeightPercentageIncrease = Math.round(overWeightPercentageIncrease);
 
       /*
         Set the state: userNameValue, averageBMIValue, percentageIncreaseValue, numParticipantsValue.
@@ -100,7 +97,7 @@ class Form extends React.Component {
         userNameValue: userName,
         downloadPdf: true,
         averageBMIValue: averageBMI,
-        percentageIncreaseValue: overWeightPercentageIncrease,
+        numOverWeightValue: numOverWeight,
         numParticipantsValue: array.length,
       });
   };
@@ -133,7 +130,7 @@ savePDFDetails = () => {
       doc.setFont("times", "italic");
       doc.text("Name: "+this.state.userNameValue, 90, 35, null, null, "center");
       doc.text("Average BMI: "+this.state.averageBMIValue, 90, 45, null, null, "center");
-      doc.text("% (Percentage) Overweight: "+this.state.percentageIncreaseValue, 85, 55, null, null, "center");
+      doc.text("Overweight: "+this.state.numOverWeightValue, 85, 55, null, null, "center");
       doc.text("Number of participants: "+this.state.numParticipantsValue, 85, 65, null, null, "center");
       doc.save("WOW-Statistics-Download.pdf");
     } else {
