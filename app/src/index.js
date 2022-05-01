@@ -26,8 +26,6 @@ class Form extends React.Component {
     var array = [];
     var overWeightPercentageIncrease = 0;
     const scope = this
-    var onloader = function(){this.setState({ image: reader.result });
-    fileReader.onload = 
     fileReader.onload = function (event) {
     const text = event.target.result;
 
@@ -54,6 +52,12 @@ class Form extends React.Component {
           sumBMI+=bmi
       });
 
+      /*
+        Calculate the average BMI.
+      */
+      const averageBMI = sumBMI/array.length;
+      console.log("Here is the average BMI: "+averageBMI);
+
 
       /*
         A BMI of 25.0 or more is overweight, while the healthy range is 18.5 to 24.9.
@@ -68,29 +72,12 @@ class Form extends React.Component {
       sumBMI = Math.round(sumBMI);
       overWeightPercentageIncrease = Math.round(overWeightPercentageIncrease);
 
-      // Generate PDF
-      // var doc = new jsPDF();
-
-      // doc.setFontSize(40);
-      // doc.setFont("helvetica", "bold");
-      // doc.text("Our Statistics", 100, 25, null, null, "center");
-      // doc.setFontSize(20);
-      // doc.setFont("times", "italic");
-      // doc.text("Name: "+userName, 90, 35, null, null, "center");
-      // doc.text("Average BMI: "+sumBMI, 90, 45, null, null, "center");
-      // doc.text("% (Percentage) Overweight: "+overWeightPercentageIncrease, 85, 55, null, null, "center");
-      // doc.text("Number of participants: "+array.length, 85, 65, null, null, "center");
-      // doc.save("Example.pdf");
-      // console.log("Should be displaying the download PDF page now!");
-      // this.savePDFDetails(userName, sumBMI, overWeightPercentageIncrease, array.length);
-      // console.log("Just called the savePDFDetails function.");
-      // scope.setState({
-      //   // nameInputValue: enteredValue,
-      //   userNameValue: userName,
-      //   averageBMIValue: sumBMI,
-      //   percentageIncreaseValue: overWeightPercentageIncrease,
-      //   numParticipantsValue: array.length,
-      // });
+      scope.setState({
+        userNameValue: userName,
+        averageBMIValue: sumBMI,
+        percentageIncreaseValue: overWeightPercentageIncrease,
+        numParticipantsValue: array.length,
+      });
   };
   fileReader.readAsText(file);
 
@@ -107,9 +94,21 @@ savePDFDetails = () => {
   console.log("Printing from the savePDFDetails function.");
   console.log("Here is the participants name: "+this.state.userNameValue);
   console.log("Here is the average bmi value: "+this.state.averageBMIValue);
-  // console.log("Here is the bmi: "+bmi);
-  // console.log("Here is the overweight percentage: "+percentage);
-  // console.log("Here is the number of participants: "+participants);
+  console.log("Here is the percentage increase: "+this.state.percentageIncreaseValue);
+  console.log("Here is the number of participants: "+this.state.numParticipantsValue);
+
+  // Generate PDF
+  var doc = new jsPDF();
+  doc.setFontSize(40);
+  doc.setFont("helvetica", "bold");
+  doc.text("Our Statistics", 100, 25, null, null, "center");
+  doc.setFontSize(20);
+  doc.setFont("times", "italic");
+  doc.text("Name: "+this.state.userNameValue, 90, 35, null, null, "center");
+  doc.text("Average BMI: "+this.state.averageBMIValue, 90, 45, null, null, "center");
+  doc.text("% (Percentage) Overweight: "+this.state.percentageIncreaseValue, 85, 55, null, null, "center");
+  doc.text("Number of participants: "+this.state.numParticipantsValue, 85, 65, null, null, "center");
+  doc.save("WOW-Statistics-Download.pdf");
 };
 
   render() {
@@ -144,28 +143,6 @@ savePDFDetails = () => {
           <p id="downloadPdfTxt">Download PDF</p>
         </div>
       )
-
-
-
-      // return (
-      //   <div>
-      //     <div className="formContainer">
-      //       <div>
-      //       <h1>Welcome</h1>
-      //       <p>Please complete your details, and upload<br/> your data to the platform.</p>
-      //       <form id="landingPageForm">
-      //         <label htmlFor="name">What is your name?</label>
-      //         <input type="text" name="name" id="name" value={this.state.nameInputValue} onChange={event => this.saveNameInputValue(event)} required/><br/>
-      //         <label htmlFor="dataUpload">Please upload your data</label><br/>
-      //         <input type="file" accept=".csv" onChange={(event) => {this.onFileChange(event, this.state.nameInputValue)}} required/>
-      //       </form>
-      //       </div>
-      //       <img src="images/workout.jpg" alt="2 people working out" weight="300" height="400"/>
-      //     </div>
-      //     <div>
-      //   </div>
-      // </div>
-      // )
   };
 };
 
@@ -194,19 +171,6 @@ class LandingPage extends React.Component {
           {this.state.showPopUp ? 'Back' : 'Upload File'}
         </button>
         </div>
-      </div>
-    )
-  }
-}
-
-class PopUp extends React.Component {
-  render() {
-    return (
-      <div className="popUpContainer">
-        <img src="images/running.png" alt="" weight="80" height="100"/>
-        <h1 id="uploadCompleteTxt">Upload Complete</h1>
-        <button id="pdfDownloadBtn"><img src="images/download.png" alt="" weight="200" height="100"/></button>
-        <p id="downloadPdfTxt">Download PDF</p>
       </div>
     )
   }
