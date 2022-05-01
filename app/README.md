@@ -1,6 +1,13 @@
 # Getting Started with the WOW-Project
 
-In this project directory, you can run:
+To run this app locally, you'll firstly need to clone this repository. \
+Then cd into this app directory. \
+Ensure that you have react (18) installed on your machine. \
+Run the following command: 
+
+### `npm install`
+
+After everything has been installed, run the following command:
 
 ### `npm start`
 
