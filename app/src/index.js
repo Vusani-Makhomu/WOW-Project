@@ -98,6 +98,7 @@ class Form extends React.Component {
       */
       scope.setState({
         userNameValue: userName,
+        downloadPdf: true,
         averageBMIValue: averageBMI,
         percentageIncreaseValue: overWeightPercentageIncrease,
         numParticipantsValue: array.length,
@@ -119,20 +120,25 @@ saveNameInputValue = event => {
 
 savePDFDetails = () => {
 
-  /*
-    Generate PDF
-   */ 
-  var doc = new jsPDF();
-  doc.setFontSize(40);
-  doc.setFont("helvetica", "bold");
-  doc.text("Our Statistics", 100, 25, null, null, "center");
-  doc.setFontSize(20);
-  doc.setFont("times", "italic");
-  doc.text("Name: "+this.state.userNameValue, 90, 35, null, null, "center");
-  doc.text("Average BMI: "+this.state.averageBMIValue, 90, 45, null, null, "center");
-  doc.text("% (Percentage) Overweight: "+this.state.percentageIncreaseValue, 85, 55, null, null, "center");
-  doc.text("Number of participants: "+this.state.numParticipantsValue, 85, 65, null, null, "center");
-  doc.save("WOW-Statistics-Download.pdf");
+    /*
+      Generate PDF
+    */ 
+
+    if (this.state.downloadPdf && this.state.nameInputValue) {
+      var doc = new jsPDF();
+      doc.setFontSize(40);
+      doc.setFont("helvetica", "bold");
+      doc.text("Our Statistics", 100, 25, null, null, "center");
+      doc.setFontSize(20);
+      doc.setFont("times", "italic");
+      doc.text("Name: "+this.state.userNameValue, 90, 35, null, null, "center");
+      doc.text("Average BMI: "+this.state.averageBMIValue, 90, 45, null, null, "center");
+      doc.text("% (Percentage) Overweight: "+this.state.percentageIncreaseValue, 85, 55, null, null, "center");
+      doc.text("Number of participants: "+this.state.numParticipantsValue, 85, 65, null, null, "center");
+      doc.save("WOW-Statistics-Download.pdf");
+    } else {
+      alert("Please go back and do the following:\n1. Complete your name.\n2. Upload your file.");
+    }
   
 };
 
@@ -152,7 +158,7 @@ savePDFDetails = () => {
                 <label htmlFor="name">What is your name?</label>
                 <input type="text" name="name" id="name" value={this.state.nameInputValue} onChange={event => this.saveNameInputValue(event)} required/><br/>
                 <label htmlFor="dataUpload">Please upload your data</label><br/>
-                <input type="file" accept=".csv" onChange={(event) => {this.onFileChange(event, this.state.nameInputValue)}} required/>
+                <input type="file" className="file-upload" accept=".csv" onChange={(event) => {this.onFileChange(event, this.state.nameInputValue)}} required/>
               </form>
               </div>
               <img src="images/workout.jpg" alt="2 people working out" weight="300" height="400"/>
@@ -171,7 +177,7 @@ savePDFDetails = () => {
         <div className="popUpContainer">
           <img src="images/running.png" alt="" weight="80" height="100"/>
           <h1 id="uploadCompleteTxt">Upload Complete</h1>
-          <button id="pdfDownloadBtn"><img src="images/download.png" alt="" weight="200" height="100" onClick={this.savePDFDetails}/></button>
+          <button id="pdfDownloadBtn"><img src="images/download.png" alt="Download button icon" weight="200" height="100" onClick={this.savePDFDetails}/></button>
           <p id="downloadPdfTxt">Download PDF</p>
         </div>
       )

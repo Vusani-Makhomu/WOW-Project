@@ -4,10 +4,6 @@ body {
   background-color: black;
 }
 
-.landingPageContainer {
-
-}
-
 .popUpContainer {
 	display: grid;
 	place-items: center;
@@ -58,6 +54,27 @@ input[type=text], select {
 
 #landingPageForm {
   padding-right: 20px;
-  
+}
+
+#uploadFileBtn {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px 0 0 60px;
+}
+
+input[type="file"] {
+  background-color: #58514F;
+}
+.file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 
