@@ -6,6 +6,10 @@ import { jsPDF } from "jspdf";
 class Form extends React.Component {
   constructor(props) {
     super(props);
+
+    /*
+      The initial state of the form.
+    */
     this.state = {
       nameInputValue: "",
       downloadPdf: false,
@@ -17,23 +21,39 @@ class Form extends React.Component {
     this.savePDFDetails = this.savePDFDetails.bind(this);
   }
 
-  // On file select
+  /*
+    On file select
+  */
   onFileChange(event, userName) {
-    // Get the selected file.
+
+    /*
+      Get the selected file.
+    */
     const file = event.target.files[0];
     const fileReader = new FileReader();
-    var sumBMI = 0;
-    var array = [];
-    var overWeightPercentageIncrease = 0;
+
+    /*
+      Store the current scope. Will be used to set state inside the onload function of the
+      file reader.
+    */
     const scope = this
+
+    /*
+      The load event is fired when a file has been read successfully.
+    */
     fileReader.onload = function (event) {
     const text = event.target.result;
 
+      /*
+        Extract the headers and rows from the CSV file.
+      */
       const csvHeader = text.slice(0, text.indexOf("\n")).split(",");
       const csvRows = text.slice(text.indexOf("\n") + 1).split("\n");
 
-      // Convert CSV file data to Array
-      array = csvRows.map(i => {
+      /*
+        Convert CSV file data to Array
+      */
+      const array = csvRows.map(i => {
         const values = i.split(",");
         const obj = csvHeader.reduce((object, header, index) => {
           object[header] = values[index];
@@ -45,18 +65,19 @@ class Form extends React.Component {
       /*
         Calculate the sum bmi of the given data.
       */
+     var sumBMI = 0;
       array.forEach(eachLine => {
           var height = Number(eachLine["Height"]);
           var weight = Number(eachLine["Weight"]);
-          var bmi = weight/height;
+          var bmi = (weight/height/height)*10000;
           sumBMI+=bmi
       });
+      sumBMI = Math.round(sumBMI);
 
       /*
         Calculate the average BMI.
       */
       const averageBMI = sumBMI/array.length;
-      console.log("Here is the average BMI: "+averageBMI);
 
 
       /*
@@ -64,17 +85,20 @@ class Form extends React.Component {
         Percentage increase formula:
             ((final value - starting value) / starting value) * 100
       */
-      
-      if (sumBMI > 25) {
-          overWeightPercentageIncrease = ((sumBMI - 25)/25)*100;
+      var overWeightPercentageIncrease = 0;
+      if (averageBMI > 25) {
+          overWeightPercentageIncrease = ((averageBMI - 25)/25)*100;
+      } else {
+        overWeightPercentageIncrease = ((averageBMI - 18.5)/18.5)*100;
       }
-
-      sumBMI = Math.round(sumBMI);
       overWeightPercentageIncrease = Math.round(overWeightPercentageIncrease);
 
+      /*
+        Set the state: userNameValue, averageBMIValue, percentageIncreaseValue, numParticipantsValue.
+      */
       scope.setState({
         userNameValue: userName,
-        averageBMIValue: sumBMI,
+        averageBMIValue: averageBMI,
         percentageIncreaseValue: overWeightPercentageIncrease,
         numParticipantsValue: array.length,
       });
@@ -83,6 +107,9 @@ class Form extends React.Component {
 
 };
 
+/*
+  This event lister retrieves the name provided by the user.
+*/
 saveNameInputValue = event => {
   const enteredValue = event.target.value;
   this.setState({
@@ -91,13 +118,10 @@ saveNameInputValue = event => {
 };
 
 savePDFDetails = () => {
-  console.log("Printing from the savePDFDetails function.");
-  console.log("Here is the participants name: "+this.state.userNameValue);
-  console.log("Here is the average bmi value: "+this.state.averageBMIValue);
-  console.log("Here is the percentage increase: "+this.state.percentageIncreaseValue);
-  console.log("Here is the number of participants: "+this.state.numParticipantsValue);
 
-  // Generate PDF
+  /*
+    Generate PDF
+   */ 
   var doc = new jsPDF();
   doc.setFontSize(40);
   doc.setFont("helvetica", "bold");
@@ -109,10 +133,14 @@ savePDFDetails = () => {
   doc.text("% (Percentage) Overweight: "+this.state.percentageIncreaseValue, 85, 55, null, null, "center");
   doc.text("Number of participants: "+this.state.numParticipantsValue, 85, 65, null, null, "center");
   doc.save("WOW-Statistics-Download.pdf");
+  
 };
 
   render() {
 
+     /*
+      If the user has not uploaded any file, this form will be displayed.
+     */
       if (!this.props.showPopUp) {
         return (
           <div>
@@ -135,6 +163,10 @@ savePDFDetails = () => {
         )
       };
 
+
+      /*
+        If the user has uploaded their file, this pop up will be displayed. 
+       */
       return (
         <div className="popUpContainer">
           <img src="images/running.png" alt="" weight="80" height="100"/>
@@ -149,10 +181,17 @@ savePDFDetails = () => {
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
+
+    /*
+      The initial state of the landing page
+    */
     this.state = {showPopUp: false};
     this.handleToggleClick = this.handleToggleClick.bind(this);
   }
 
+  /*
+    Responsible for toggling between the pop up and the upload data form.
+  */
   handleToggleClick() {
     this.setState({
       showPopUp: !this.state.showPopUp,
@@ -167,7 +206,7 @@ class LandingPage extends React.Component {
         </div>
         <div className="pageForm">
           <Form showPopUp={this.state.showPopUp}/>
-          <button onClick={this.handleToggleClick}>
+          <button id="uploadFileBtn" onClick={this.handleToggleClick}>
           {this.state.showPopUp ? 'Back' : 'Upload File'}
         </button>
         </div>
@@ -175,7 +214,6 @@ class LandingPage extends React.Component {
     )
   }
 }
-
 
 //==============================================================================
 const root = ReactDOM.createRoot(document.getElementById("root"));
