@@ -83,7 +83,6 @@ class Form extends React.Component {
           sumBMI+=bmi
       });
       sumBMI = Math.round(sumBMI);
-      console.log("Here are the number of participants who are overweight: "+numOverWeight);
 
       /*
         Calculate the average BMI.
