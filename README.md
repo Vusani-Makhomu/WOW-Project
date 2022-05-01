@@ -1,5 +1,6 @@
 # WOW-Project
 Case study project for WOW! (Western cape On Wellness) Project.
+The project is located in the app directory. The information that follows here is simply the wireframes for the project.
 
 
 ## Landing Page
