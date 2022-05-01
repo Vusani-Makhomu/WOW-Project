@@ -127,7 +127,7 @@ savePDFDetails = () => {
       doc.text("Our Statistics", 100, 25, null, null, "center");
       doc.setFontSize(20);
       doc.setFont("times", "italic");
-      doc.text("Name: "+this.state.userNameValue, 90, 35, null, null, "center");
+      // doc.text("Name: "+this.state.userNameValue, 90, 35, null, null, "center");
       doc.text("Average BMI: "+this.state.averageBMIValue, 90, 45, null, null, "center");
       doc.text("Overweight: "+this.state.numOverWeightValue, 85, 55, null, null, "center");
       doc.text("Number of participants: "+this.state.numParticipantsValue, 85, 65, null, null, "center");
